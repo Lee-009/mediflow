@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediFlow | Smart Hospital Queue System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body
+    data-dashboard-url="{{ url_for('dashboard_data') }}"
+    data-register-url="{{ url_for('register_patient') }}"
+    data-call-next-url="{{ url_for('call_next_patient') }}"
+    data-complete-url="{{ url_for('complete_current_patient') }}"
+>
+    <nav class="site-nav">
+        <a href="#home" class="brand">
+            <span class="brand-mark">M</span>
+            <span class="brand-copy">
+                <strong>MediFlow</strong>
+                <small>Hospital Queue Intelligence</small>
+            </span>
+        </a>
+
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#register">Register</a>
+            <a href="#queue">Queue</a>
+            <a href="#doctors">Doctors</a>
+            <a href="#contact">Contact</a>
+        </div>
+
+        <div class="nav-utility">
+            <span class="status-chip">Real-time Dashboard</span>
+        </div>
+    </nav>
+
+    <main class="page-shell">
+        <section class="hero-section" id="home">
+            <div class="hero-copy">
+                <div class="hero-copy-inner">
+                    <div class="eyebrow-row">
+                        <p class="eyebrow">Smart Queue Control</p>
+                        <span class="eyebrow-tag">Live Operations</span>
+                    </div>
+
+                    <h1>Care Shouldn't Wait in Line.</h1>
+
+                    <p class="hero-text">
+                        MediFlow creates smoother patient journeys through smart queue management.
+                    </p>
+
+                    <div class="hero-actions">
+                        <button type="button" class="primary-btn" onclick="showForm()">Register Patient</button>
+                        <a href="#queue" class="secondary-btn">View Live Queue</a>
+                    </div>
+                </div>
+
+                <div class="hero-note-grid">
+                    <article class="hero-note">
+                        <strong>Digital Intake</strong>
+                        <span>Faster patient registration at the front desk.</span>
+                    </article>
+                    <article class="hero-note">
+                        <strong>Priority Routing</strong>
+                        <span>Emergency and special cases move up instantly.</span>
+                    </article>
+                    <article class="hero-note">
+                        <strong>Doctor Balancing</strong>
+                        <span>Queues stay organized with room-aware allocation.</span>
+                    </article>
+                </div>
+            </div>
+
+            <div class="hero-panel">
+                <div class="panel-card">
+                    <div class="panel-head">
+                        <div>
+                            <p>Operations Snapshot</p>
+                            <h2>Hospital readiness at a glance</h2>
+                        </div>
+                        <span id="updated-at">{{ dashboard.updated_at }}</span>
+                    </div>
+
+                    <div class="metric-stack">
+                        <article class="metric-card accent-blue">
+                            <span>Current Token</span>
+                            <strong id="stat-current-token">{{ dashboard.stats.current_token }}</strong>
+                        </article>
+                        <article class="metric-card accent-amber">
+                            <span>Waiting Patients</span>
+                            <strong id="stat-waiting-count">{{ dashboard.stats.waiting_count }}</strong>
+                        </article>
+                        <article class="metric-card accent-teal">
+                            <span>Available Doctors</span>
+                            <strong id="stat-available-doctors">{{ dashboard.stats.available_doctors }}</strong>
+                        </article>
+                        <article class="metric-card accent-rose">
+                            <span>Priority Cases</span>
+                            <strong id="stat-priority-cases">{{ dashboard.stats.priority_cases }}</strong>
+                        </article>
+                    </div>
+
+                    <div class="hero-summary">
+                        <article>
+                            <span>Active Consultations</span>
+                            <strong id="stat-active-count">{{ dashboard.stats.active_count }}</strong>
+                        </article>
+                        <article>
+                            <span>Completed Tokens</span>
+                            <strong id="stat-completed-count">{{ dashboard.stats.completed_count }}</strong>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-grid" id="register">
+            <div class="registration-panel">
+                <div class="section-heading">
+                    <p class="eyebrow">Front Desk Intake</p>
+                    <h2>Patient registration and token issue</h2>
+                    <p class="section-copy">
+                        Capture patient details, mark urgent cases, and push each entry directly into the live queue.
+                    </p>
+                </div>
+
+                <form id="registration-form" class="registration-form">
+                    <div class="form-grid">
+                        <label>
+                            <span>Full Name</span>
+                            <input type="text" name="full_name" placeholder="Enter patient name" required>
+                        </label>
+
+                        <label>
+                            <span>Age</span>
+                            <input type="number" name="age" placeholder="Age" min="1" max="120" required>
+                        </label>
+
+                        <label>
+                            <span>Phone Number</span>
+                            <input type="tel" name="phone" placeholder="Phone number" required>
+                        </label>
+
+                        <label>
+                            <span>Gender</span>
+                            <select name="gender" required>
+                                <option value="">Select gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </label>
+
+                        <label>
+                            <span>Department</span>
+                            <select name="department" required>
+                                <option value="">Select department</option>
+                                {% for department in departments %}
+                                <option value="{{ department }}">{{ department }}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+
+                        <label class="full-width">
+                            <span>Symptoms / Case Notes</span>
+                            <textarea name="symptoms" rows="5" placeholder="Describe symptoms or the reason for visit" required></textarea>
+                        </label>
+                    </div>
+
+                    <div class="priority-box">
+                        <div class="priority-copy">
+                            <h3>Priority support</h3>
+                            <p>Senior citizens and young children are prioritized automatically from age.</p>
+                        </div>
+
+                        <label class="check-row">
+                            <input type="checkbox" name="is_pregnant">
+                            <span>Pregnant patient</span>
+                        </label>
+
+                        <label class="check-row">
+                            <input type="checkbox" name="is_emergency">
+                            <span>Emergency case</span>
+                        </label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="primary-btn" id="submit-btn">Generate Token</button>
+                    </div>
+                </form>
+            </div>
+
+            <aside class="token-panel">
+                <div class="section-heading">
+                    <p class="eyebrow">Control Actions</p>
+                    <h2>Latest token and desk actions</h2>
+                    <p class="section-copy">
+                        Create tokens, call the next patient, and mark consultations complete from one panel.
+                    </p>
+                </div>
+
+                <div class="token-result empty" id="token-result">
+                    <p class="token-empty-title">No token generated yet.</p>
+                    <p class="token-empty-text">Submit the registration form to create a token and send the patient into the queue.</p>
+                </div>
+
+                <div class="status-note" id="status-message">
+                    Live updates will appear here after registration and queue actions.
+                </div>
+
+                <div class="quick-actions">
+                    <button type="button" class="secondary-btn action-btn" id="call-next-btn">Call Next Token</button>
+                    <button type="button" class="secondary-btn action-btn" id="complete-btn">Complete Current</button>
+                </div>
+            </aside>
+        </section>
+
+        <section class="queue-section" id="queue">
+            <div class="section-heading">
+                <p class="eyebrow">Queue Overview</p>
+                <h2>Track patients across every stage</h2>
+                <p class="section-copy">
+                    See who is being treated, who is waiting, and who has already completed consultation.
+                </p>
+            </div>
+
+            <div class="queue-layout">
+                <div class="queue-card active-card">
+                    <div class="card-head">
+                        <div>
+                            <h3>Active Consultations</h3>
+                            <p>Patients currently inside the doctor workflow.</p>
+                        </div>
+                        <span class="badge blue">Now Serving</span>
+                    </div>
+                    <div class="active-list" id="active-consultations">
+                        {% if dashboard.active_consultations %}
+                            {% for patient in dashboard.active_consultations %}
+                            <article class="active-item">
+                                <div>
+                                    <strong>{{ patient.token_number }}</strong>
+                                    <p>{{ patient.full_name }} &middot; {{ patient.department }}</p>
+                                </div>
+                                <div class="active-meta">
+                                    <span>{{ patient.doctor_name }}</span>
+                                    <small>{{ patient.doctor_room }}</small>
+                                </div>
+                            </article>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty-state">No consultation is active right now.</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="queue-card waiting-card">
+                    <div class="card-head">
+                        <div>
+                            <h3>Waiting Queue</h3>
+                            <p>Patients lined up by priority and registration time.</p>
+                        </div>
+                        <span class="badge amber">Priority Sorted</span>
+                    </div>
+                    <div class="waiting-list" id="waiting-queue">
+                        {% if dashboard.waiting_queue %}
+                            {% for patient in dashboard.waiting_queue %}
+                            <article class="waiting-item">
+                                <div class="queue-index">{{ loop.index }}</div>
+                                <div class="queue-body">
+                                    <strong>{{ patient.token_number }} &middot; {{ patient.full_name }}</strong>
+                                    <p>{{ patient.department }} &middot; Suggested doctor: {{ patient.doctor_name }}</p>
+                                </div>
+                                <span class="priority-tag">{{ patient.priority_label }}</span>
+                            </article>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty-state">The queue is clear. Newly registered patients will appear here.</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="queue-card completed-card">
+                    <div class="card-head">
+                        <div>
+                            <h3>Recently Completed</h3>
+                            <p>Patients whose consultation is already finished.</p>
+                        </div>
+                        <span class="badge teal">Done</span>
+                    </div>
+                    <div class="completed-list" id="completed-queue">
+                        {% if dashboard.recent_completed %}
+                            {% for patient in dashboard.recent_completed %}
+                            <article class="completed-item">
+                                <div>
+                                    <strong>{{ patient.token_number }} &middot; {{ patient.full_name }}</strong>
+                                    <p>{{ patient.department }} &middot; {{ patient.doctor_name }}</p>
+                                </div>
+                                <span class="complete-tag">Completed</span>
+                            </article>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty-state">Completed patients will appear here after consultation is finished.</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="doctors-section" id="doctors">
+            <div class="section-heading">
+                <p class="eyebrow">Doctor Availability</p>
+                <h2>Department-wise doctor allocation</h2>
+                <p class="section-copy">
+                    Each doctor card shows room details and the live load assigned to that doctor.
+                </p>
+            </div>
+
+            <div class="doctor-grid" id="doctor-grid">
+                {% for doctor in dashboard.doctors %}
+                <article class="doctor-card">
+                    <div class="doctor-top">
+                        <div>
+                            <h3>{{ doctor.name }}</h3>
+                            <p>{{ doctor.specialty }}</p>
+                        </div>
+                        <span class="status-pill {{ doctor.status|lower }}">{{ doctor.status }}</span>
+                    </div>
+                    <div class="doctor-stats">
+                        <div>
+                            <span>Room</span>
+                            <strong>{{ doctor.room }}</strong>
+                        </div>
+                        <div>
+                            <span>Waiting</span>
+                            <strong>{{ doctor.waiting_load }}</strong>
+                        </div>
+                        <div>
+                            <span>Active</span>
+                            <strong>{{ doctor.active_load }}</strong>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer" id="contact">
+        <div>
+            <strong>MediFlow</strong>
+            <p>Smart hospital queue and token management for faster, cleaner patient flow.</p>
+        </div>
+        <div>
+            <span>Project Stack</span>
+            <p>Python Flask &middot; SQLite &middot; HTML &middot; CSS &middot; JavaScript</p>
+        </div>
+    </footer>
+
+    <script id="initial-dashboard" type="application/json">{{ dashboard | tojson }}</script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

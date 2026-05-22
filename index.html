@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Relief Guide</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Age-aware OTC symptom helper</p>
+          <h1>Safer relief ideas for common everyday symptoms.</h1>
+          <p class="hero-text">
+            Choose an age group and a symptom to see conservative
+            over-the-counter options, what to avoid, and when to get medical
+            help. This app is educational only and does not diagnose disease.
+          </p>
+          <div class="hero-badges">
+            <span>Minor symptoms only</span>
+            <span>No prescriptions</span>
+            <span>Red-flag warnings included</span>
+          </div>
+        </div>
+
+        <aside class="hero-alert">
+          <h2>Get urgent help now if</h2>
+          <ul>
+            <li>there is trouble breathing, blue lips, or confusion</li>
+            <li>a baby under 3 months has fever 100.4 F / 38 C or higher</li>
+            <li>the person is dehydrated or cannot keep fluids down</li>
+            <li>stomach pain is sudden, severe, hard, or has blood</li>
+          </ul>
+        </aside>
+      </header>
+
+      <main class="dashboard">
+        <section class="panel controls-panel">
+          <div class="panel-heading">
+            <p class="section-kicker">Start here</p>
+            <h2>Choose age and symptom</h2>
+          </div>
+
+          <div class="control-grid">
+            <label class="control-card" for="age-group">
+              <span>Age group</span>
+              <select id="age-group">
+                <option value="infant">Infant (0-23 months)</option>
+                <option value="child">Child (2-11 years)</option>
+                <option value="teen">Teen (12-17 years)</option>
+                <option value="adult" selected>Adult (18-64 years)</option>
+                <option value="olderAdult">Older adult (65+ years)</option>
+              </select>
+            </label>
+
+            <label class="control-card" for="symptom">
+              <span>Main symptom</span>
+              <select id="symptom">
+                <option value="cough">Cough</option>
+                <option value="cold">Cold / stuffy nose</option>
+                <option value="fever">Fever</option>
+                <option value="headache">Headache</option>
+                <option value="stomach">Stomach ache / upset stomach</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="summary-strip">
+            <div>
+              <p class="summary-label">Selection</p>
+              <p class="summary-value" id="summary-title">Adult with cough</p>
+            </div>
+            <div>
+              <p class="summary-label">Safety note</p>
+              <p class="summary-value" id="summary-note"></p>
+            </div>
+          </div>
+        </section>
+
+        <section class="results-grid">
+          <article class="panel result-card">
+            <div class="panel-heading">
+              <p class="section-kicker">What may help</p>
+              <h2 id="result-title">Medicine and comfort options</h2>
+            </div>
+            <ul id="can-try-list" class="detail-list"></ul>
+          </article>
+
+          <article class="panel result-card caution-card">
+            <div class="panel-heading">
+              <p class="section-kicker">Use extra caution</p>
+              <h2>Medicines to avoid or check first</h2>
+            </div>
+            <ul id="avoid-list" class="detail-list"></ul>
+          </article>
+
+          <article class="panel result-card">
+            <div class="panel-heading">
+              <p class="section-kicker">Supportive care</p>
+              <h2>Non-medicine tips</h2>
+            </div>
+            <ul id="care-list" class="detail-list"></ul>
+          </article>
+
+          <article class="panel result-card alert-card">
+            <div class="panel-heading">
+              <p class="section-kicker">See a doctor now if</p>
+              <h2>Red flags for this symptom</h2>
+            </div>
+            <ul id="urgent-list" class="detail-list"></ul>
+          </article>
+        </section>
+
+        <section class="panel notes-panel">
+          <div class="panel-heading">
+            <p class="section-kicker">Important reminders</p>
+            <h2>How to use this safely</h2>
+          </div>
+          <div class="note-grid" id="notes-grid"></div>
+        </section>
+
+        <section class="panel sources-panel">
+          <div class="panel-heading">
+            <p class="section-kicker">Reference points</p>
+            <h2>Public health sources used</h2>
+          </div>
+          <p class="source-intro">
+            This app simplifies public guidance from FDA, CDC, NHS, and
+            MedlinePlus into broad, cautious OTC suggestions.
+          </p>
+          <ul class="source-list">
+            <li><a href="https://www.fda.gov/drugs/information-drug-class/frequently-asked-question-childrens-cough-and-cold-medicines" target="_blank" rel="noreferrer">FDA: children's cough and cold medicine safety</a></li>
+            <li><a href="https://www.fda.gov/consumers/consumer-updates/should-you-give-kids-medicine-coughs-and-colds" target="_blank" rel="noreferrer">FDA: using cough and cold medicine in kids</a></li>
+            <li><a href="https://medlineplus.gov/commoncold.html" target="_blank" rel="noreferrer">MedlinePlus: common cold care</a></li>
+            <li><a href="https://medlineplus.gov/fever.html" target="_blank" rel="noreferrer">MedlinePlus: fever basics</a></li>
+            <li><a href="https://medlineplus.gov/druginfo/meds/a681004.html" target="_blank" rel="noreferrer">MedlinePlus: acetaminophen</a></li>
+            <li><a href="https://medlineplus.gov/druginfo/meds/a682159.html" target="_blank" rel="noreferrer">MedlinePlus: ibuprofen</a></li>
+            <li><a href="https://medlineplus.gov/diarrhea.html" target="_blank" rel="noreferrer">MedlinePlus: diarrhea and dehydration</a></li>
+            <li><a href="https://medlineplus.gov/druginfo/meds/a607040.html" target="_blank" rel="noreferrer">MedlinePlus: bismuth subsalicylate</a></li>
+            <li><a href="https://medlineplus.gov/abdominalpain.html" target="_blank" rel="noreferrer">MedlinePlus: abdominal pain warning signs</a></li>
+            <li><a href="https://www.cdc.gov/sore-throat/about/index.html" target="_blank" rel="noreferrer">CDC: sore throat home care</a></li>
+          </ul>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
